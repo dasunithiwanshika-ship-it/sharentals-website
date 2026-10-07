@@ -1,3 +1,5 @@
+import logoImg from "../assets/logo.png";
+
 function Footer() {
   return (
     <footer className="bg-slate-950 text-slate-400 py-12 sm:py-16 border-t border-slate-900">
@@ -8,7 +10,7 @@ function Footer() {
           <div className="lg:col-span-4">
             <a href="#home" className="inline-block bg-white rounded p-2 mb-4">
               <img
-                src="/logo.png"
+                src={logoImg}
                 alt="Sharentals Logo"
                 className="h-8 sm:h-9 w-auto object-contain"
               />

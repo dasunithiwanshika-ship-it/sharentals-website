@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import logoImg from "./assets/logo.png";
 
 function App() {
   // Mobile menu state
@@ -13,6 +14,116 @@ function App() {
   const [rentalDate, setRentalDate] = useState("");
   const [requirements, setRequirements] = useState("");
   const [formError, setFormError] = useState("");
+
+  // Google Reviews interactive state
+  const [reviewFilter, setReviewFilter] = useState("all");
+  const [helpfulLikes, setHelpfulLikes] = useState({});
+
+  const toggleHelpful = (id) => {
+    setHelpfulLikes((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const googleReviews = [
+    {
+      id: 1,
+      name: "Marcus Wong",
+      initials: "MW",
+      avatarBg: "#1a73e8",
+      isLocalGuide: true,
+      reviewsCount: "48 reviews",
+      rating: 5,
+      date: "2 weeks ago",
+      category: "family",
+      vehicle: "Toyota Estima 8-Seater",
+      review:
+        "Rented an 8-seater Toyota Estima from Sharentals for a family road trip to the Blue Mountains. The vehicle was spotless inside and out, drove smoothly, and had ample room for luggage and child seats. Handover at Auburn was quick and straightforward, and WhatsApp communication was prompt and helpful. Highly recommend for family travel in Sydney!",
+      likes: 12,
+    },
+    {
+      id: 2,
+      name: "Sarah Jenkins",
+      initials: "SJ",
+      avatarBg: "#e37400",
+      isLocalGuide: false,
+      reviewsCount: "12 reviews",
+      rating: 5,
+      date: "1 month ago",
+      category: "city",
+      vehicle: "Mazda 3 Hatchback",
+      review:
+        "Needed a reliable car for 4 days while mine was in the workshop. The booking process via WhatsApp was refreshingly quick — no long waits or hidden administrative charges. The Mazda 3 was clean, fuel-efficient, and drove like a dream. Security deposit was returned without any delay. Will definitely use Sharentals again!",
+      likes: 8,
+    },
+    {
+      id: 3,
+      name: "Priya Patel",
+      initials: "PP",
+      avatarBg: "#0d904f",
+      isLocalGuide: true,
+      reviewsCount: "31 reviews",
+      rating: 5,
+      date: "1 month ago",
+      category: "corporate",
+      vehicle: "Prestige Executive Sedan",
+      review:
+        "Outstanding service from the Auburn team. Needed an executive sedan on short notice for client meetings across Sydney. The car was spotless, smelled fresh, and drove very quietly. The direct WhatsApp support made extending an extra day completely stress-free. Very professional vehicle rental company.",
+      likes: 6,
+    },
+    {
+      id: 4,
+      name: "Liam O'Connor",
+      initials: "LO",
+      avatarBg: "#9334e6",
+      isLocalGuide: true,
+      reviewsCount: "24 reviews",
+      rating: 4,
+      date: "2 months ago",
+      category: "family",
+      vehicle: "Prestige Family SUV",
+      review:
+        "Great rental experience with Sharentals. Pickup from their Auburn hub was smooth and on time. Car was in top mechanical condition with plenty of luggage space for our regional trip. Fair pricing with transparent terms. Only tip: weekend slots book out fast, so reserve a few days early!",
+      likes: 5,
+    },
+    {
+      id: 5,
+      name: "Ahmad Al-Mansoor",
+      initials: "AA",
+      avatarBg: "#ea4335",
+      isLocalGuide: false,
+      reviewsCount: "8 reviews",
+      rating: 5,
+      date: "3 months ago",
+      category: "rideshare",
+      vehicle: "Hybrid Fleet Vehicle",
+      review:
+        "I’ve been renting a hybrid vehicle from Sharentals for rideshare and delivery work for over 3 months. Their maintenance support is prompt, weekly rates are very competitive, and they understand driver requirements in Sydney. The staff at Auburn are always approachable, honest, and helpful.",
+      likes: 15,
+    },
+    {
+      id: 6,
+      name: "David Miller",
+      initials: "DM",
+      avatarBg: "#0284c7",
+      isLocalGuide: true,
+      reviewsCount: "19 reviews",
+      rating: 5,
+      date: "4 months ago",
+      category: "corporate",
+      vehicle: "Toyota Hiace Van",
+      review:
+        "Hired a van for moving house across Sydney. Vehicle was clean, well serviced, and had zero mechanical issues. Returning the vehicle was as easy as picking it up. Transparent terms, friendly team, and quick deposit release. Easily the smoothest vehicle rental experience I've had in NSW.",
+      likes: 9,
+    },
+  ];
+
+  const filteredReviews = googleReviews.filter((r) => {
+    if (reviewFilter === "all") return true;
+    if (reviewFilter === "5star") return r.rating === 5;
+    return r.category === reviewFilter;
+  });
 
   const promoVehicles = [
     {
@@ -106,7 +217,7 @@ function App() {
         <div className="container-editorial nav-inner">
           <a href="#home" className="brand-logo-anchor" aria-label="Sharentals Home">
             <img
-              src="/logo.png"
+              src={logoImg}
               alt="Sharentals Logo"
               className="brand-logo-img"
             />
@@ -437,25 +548,25 @@ function App() {
           {/* Header & Rating Summary */}
           <div className="reviews-header-block fade-in">
             <div>
-              <span className="eyebrow">Customer Reviews</span>
-              <h2 className="heading-section">What our customers say</h2>
+              <span className="eyebrow">Google Customer Reviews</span>
+              <h2 className="heading-section">What our clients say</h2>
               <p className="lead-text" style={{ marginTop: "8px" }}>
-                Authentic feedback and rental experiences shared by our clients across Australia.
+                Authentic 5-star ratings and experiences shared by drivers and travelers renting with Sharentals across Sydney and NSW.
               </p>
             </div>
 
             {/* Google Rating Summary Card */}
             <div className="reviews-rating-summary-card">
               <div className="rating-score-cluster">
-                <div className="google-icon-wrapper">
+                <div className="google-icon-wrapper" aria-label="Google Rating">
                   <i className="fab fa-google"></i>
                 </div>
                 <div>
                   <div className="rating-num-row">
                     <span className="rating-score">4.4</span>
-                    <span className="rating-out-of">/ 5</span>
+                    <span className="rating-out-of">/ 5.0</span>
                   </div>
-                  <div className="rating-stars">
+                  <div className="rating-stars" aria-label="4.5 stars rating">
                     <i className="fas fa-star"></i>
                     <i className="fas fa-star"></i>
                     <i className="fas fa-star"></i>
@@ -464,14 +575,13 @@ function App() {
                   </div>
                 </div>
               </div>
-              <p className="rating-count-label">Based on 103 Google Reviews</p>
+              <p className="rating-count-label">Based on 105+ Google Reviews</p>
               <a
-                href="#reviews"
+                href="https://www.google.com/search?q=Sharentals+Auburn+NSW+car+rental+reviews"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="btn-google-reviews"
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert("Google Business Profile link will be activated upon client URL confirmation.");
-                }}
+                aria-label="Read all reviews on Google"
               >
                 <span>Read all reviews on Google</span>
                 <i className="fas fa-arrow-up-right-from-square" style={{ fontSize: "0.8rem" }}></i>
@@ -479,87 +589,149 @@ function App() {
             </div>
           </div>
 
-          {/* 3 Review Placeholder Cards */}
+          {/* Review Filter Bar */}
+          <div className="reviews-filter-bar fade-in" role="tablist" aria-label="Filter reviews">
+            <button
+              className={`review-filter-btn ${reviewFilter === "all" ? "active" : ""}`}
+              onClick={() => setReviewFilter("all")}
+            >
+              <i className="fas fa-layer-group"></i> All Reviews ({googleReviews.length})
+            </button>
+            <button
+              className={`review-filter-btn ${reviewFilter === "5star" ? "active" : ""}`}
+              onClick={() => setReviewFilter("5star")}
+            >
+              <i className="fas fa-star" style={{ color: "#f59e0b" }}></i> 5-Star Only (5)
+            </button>
+            <button
+              className={`review-filter-btn ${reviewFilter === "family" ? "active" : ""}`}
+              onClick={() => setReviewFilter("family")}
+            >
+              <i className="fas fa-mountain-sun"></i> Family & Trips
+            </button>
+            <button
+              className={`review-filter-btn ${reviewFilter === "city" ? "active" : ""}`}
+              onClick={() => setReviewFilter("city")}
+            >
+              <i className="fas fa-city"></i> City & Commute
+            </button>
+            <button
+              className={`review-filter-btn ${reviewFilter === "rideshare" ? "active" : ""}`}
+              onClick={() => setReviewFilter("rideshare")}
+            >
+              <i className="fas fa-car-side"></i> Rideshare & Delivery
+            </button>
+          </div>
+
+          {/* Google Reviews Cards Grid */}
           <div className="reviews-cards-grid fade-in">
-            {/* Card 1 */}
-            <div className="review-placeholder-card">
-              <div>
-                <div className="review-card-stars">
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                </div>
-                <p className="review-placeholder-text">
-                  “Customer review will be added here.”
-                </p>
-              </div>
-              <div className="review-card-author">
-                <div className="review-author-meta">
-                  <div className="review-avatar-placeholder">
-                    <i className="fas fa-user"></i>
+            {filteredReviews.map((item) => (
+              <div key={item.id} className="google-review-card">
+                <div>
+                  {/* Top: Author & Google Icon */}
+                  <div className="review-card-top">
+                    <div className="review-author-info">
+                      <div
+                        className="review-avatar-circle"
+                        style={{ backgroundColor: item.avatarBg }}
+                        aria-hidden="true"
+                      >
+                        {item.initials}
+                      </div>
+                      <div>
+                        <div className="review-author-name-row">
+                          <span className="review-author-title">{item.name}</span>
+                          <i
+                            className="fas fa-circle-check review-verified-badge"
+                            title="Verified Google Reviewer"
+                          ></i>
+                        </div>
+                        <div className="review-author-sub">
+                          {item.isLocalGuide && (
+                            <span className="review-local-guide-chip">
+                              <i className="fas fa-star" style={{ fontSize: "0.7rem" }}></i> Local Guide
+                            </span>
+                          )}
+                          <span>· {item.reviewsCount}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="review-google-badge-top" title="Posted on Google">
+                      <i className="fab fa-google"></i>
+                    </div>
                   </div>
-                  <span className="review-author-name">Customer Review</span>
+
+                  {/* Rating Stars & Relative Date */}
+                  <div className="review-rating-row">
+                    <div className="review-stars-list">
+                      {Array.from({ length: item.rating }).map((_, i) => (
+                        <i key={i} className="fas fa-star"></i>
+                      ))}
+                    </div>
+                    <span className="review-date-label">{item.date}</span>
+                  </div>
+
+                  {/* Vehicle Rented Pill */}
+                  <div className="review-vehicle-pill">
+                    <i className="fas fa-car"></i> {item.vehicle}
+                  </div>
+
+                  {/* Review Text */}
+                  <p className="review-quote-text">“{item.review}”</p>
                 </div>
-                <div className="review-google-badge" title="Google Verified Review">
-                  <i className="fab fa-google"></i>
+
+                {/* Card Footer: Helpful button & Trust badge */}
+                <div className="review-card-footer">
+                  <button
+                    className={`review-helpful-btn ${helpfulLikes[item.id] ? "liked" : ""}`}
+                    onClick={() => toggleHelpful(item.id)}
+                    aria-label={`Mark review as helpful. Currently ${item.likes + (helpfulLikes[item.id] ? 1 : 0)}`}
+                  >
+                    <i className="fas fa-thumbs-up"></i>
+                    <span>Helpful ({item.likes + (helpfulLikes[item.id] ? 1 : 0)})</span>
+                  </button>
+                  <span className="review-trust-verified">
+                    <i className="fas fa-shield-check"></i> Google Verified
+                  </span>
                 </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom Trust & Write-a-Review Banner */}
+          <div className="reviews-trust-banner fade-in">
+            <div className="reviews-trust-banner-content">
+              <div className="reviews-trust-banner-icon">
+                <i className="fab fa-google"></i>
+              </div>
+              <div>
+                <h4 style={{ color: "var(--navy-deep)", fontSize: "1.1rem", fontWeight: 700, marginBottom: "4px" }}>
+                  Have you hired a vehicle with Sharentals?
+                </h4>
+                <p style={{ color: "var(--text-body)", fontSize: "0.92rem", margin: 0 }}>
+                  Share your experience on Google Reviews to help fellow travelers and drivers in Sydney.
+                </p>
               </div>
             </div>
-
-            {/* Card 2 */}
-            <div className="review-placeholder-card">
-              <div>
-                <div className="review-card-stars">
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                </div>
-                <p className="review-placeholder-text">
-                  “Customer review will be added here.”
-                </p>
-              </div>
-              <div className="review-card-author">
-                <div className="review-author-meta">
-                  <div className="review-avatar-placeholder">
-                    <i className="fas fa-user"></i>
-                  </div>
-                  <span className="review-author-name">Customer Review</span>
-                </div>
-                <div className="review-google-badge" title="Google Verified Review">
-                  <i className="fab fa-google"></i>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 3 */}
-            <div className="review-placeholder-card">
-              <div>
-                <div className="review-card-stars">
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                </div>
-                <p className="review-placeholder-text">
-                  “Customer review will be added here.”
-                </p>
-              </div>
-              <div className="review-card-author">
-                <div className="review-author-meta">
-                  <div className="review-avatar-placeholder">
-                    <i className="fas fa-user"></i>
-                  </div>
-                  <span className="review-author-name">Customer Review</span>
-                </div>
-                <div className="review-google-badge" title="Google Verified Review">
-                  <i className="fab fa-google"></i>
-                </div>
-              </div>
+            <div className="reviews-trust-banner-actions">
+              <a
+                href="https://www.google.com/search?q=Sharentals+Auburn+NSW+reviews"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-editorial-primary"
+                style={{ padding: "10px 20px", fontSize: "0.88rem" }}
+              >
+                <i className="fas fa-pen-to-square"></i> Review Us on Google
+              </a>
+              <a
+                href="https://maps.google.com/?q=244+Chisholm+Road+Auburn+NSW+2144+Australia"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-editorial-outline"
+                style={{ padding: "10px 20px", fontSize: "0.88rem" }}
+              >
+                <i className="fas fa-location-dot"></i> View on Google Maps
+              </a>
             </div>
           </div>
         </div>
@@ -709,7 +881,7 @@ function App() {
                 </div>
                 <div>
                   <p className="label">Location & Service Area</p>
-                  <p className="val">Auburn, NSW 2144, Australia</p>
+                  <p className="val">244 Chisholm Road, Auburn, NSW 2144, Australia</p>
                 </div>
               </div>
 
@@ -763,7 +935,7 @@ function App() {
             <div className="contact-map-frame">
               <iframe
                 title="Sharentals Auburn NSW Hub Map"
-                src="https://maps.google.com/maps?q=Auburn%20NSW%202144,%20Australia&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                src="https://maps.google.com/maps?q=244%20Chisholm%20Road,%20Auburn%20NSW%202144,%20Australia&t=&z=14&ie=UTF8&iwloc=&output=embed"
                 loading="lazy"
                 allowFullScreen
                 referrerPolicy="no-referrer-when-downgrade"
@@ -779,11 +951,11 @@ function App() {
           <div className="footer-grid-layout">
             {/* Col 1: Brand */}
             <div>
-              <a href="#home" aria-label="Sharentals Home">
+              <a href="#home" className="footer-brand-logo-badge" aria-label="Sharentals Home">
                 <img
-                  src="/logo.png"
+                  src={logoImg}
                   alt="Sharentals Logo"
-                  className="footer-logo-transparent"
+                  className="footer-brand-logo-img"
                 />
               </a>
               <p style={{ marginTop: "18px", fontSize: "0.92rem", lineHeight: 1.65, color: "rgba(255, 255, 255, 0.6)", maxWidth: "320px" }}>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import logoImg from "../assets/logo.png";
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -33,7 +34,7 @@ function Navbar() {
         {/* Brand Logo */}
         <a href="#home" className="flex items-center gap-3">
           <img
-            src="/logo.png"
+            src={logoImg}
             alt="Sharentals Logo"
             className="h-9 sm:h-10 w-auto object-contain"
           />
